@@ -158,6 +158,7 @@ func TestListAccountApi(t *testing.T) {
 
 	//build stubs
 	arg := db.ListAccountsParams{
+		Owner:  user.Username,
 		Limit:  int32(n),
 		Offset: 0,
 	}
@@ -173,6 +174,8 @@ func TestListAccountApi(t *testing.T) {
 	url := "/accounts"
 	request, err := http.NewRequest(http.MethodGet, url, nil)
 	require.NoError(t, err)
+
+	addAuthorization(t, request, server.tokenMaker, authorizationTypeBearer, user.Username, time.Minute)
 
 	// Add query parameters to request URL
 	q := request.URL.Query()
